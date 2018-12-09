@@ -1,0 +1,3 @@
+Detector,Profile,File,Threshold,Score,TP,TN,FP,FN,Total_Count
+null,standard,realTweets/Twitter_volume_AAPL.csv,0.5,-1439.95020381,1588,0,13564,0,15902
+Totals,,,,-1439.95020381,1588,0,13564,0,15902

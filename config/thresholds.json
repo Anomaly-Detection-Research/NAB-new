@@ -1,0 +1,34 @@
+{
+    "TSA_AR": {
+        "standard": {
+            "score": -0.4925706230773128,
+            "threshold": 0.5
+        }
+    },
+    "TSA_ARMA": {
+        "standard": {
+            "score": -57.53265388990167,
+            "threshold": 0.9749755859375003
+        }
+    },
+    "TSA_MA": {
+        "standard": {
+            "score": -64.82138609018517,
+            "threshold": 0.9773681640625006
+        }
+    },
+    "null": {
+        "reward_low_FN_rate": {
+            "score": -232.0,
+            "threshold": 0.6250000000000001
+        },
+        "reward_low_FP_rate": {
+            "score": -116.0,
+            "threshold": 0.6250000000000001
+        },
+        "standard": {
+            "score": -1439.9502038074359,
+            "threshold": 0.5
+        }
+    }
+}

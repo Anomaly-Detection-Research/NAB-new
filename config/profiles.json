@@ -1,0 +1,10 @@
+{
+"standard": {
+	"CostMatrix": {
+    	"tpWeight": 1.0,
+    	"fnWeight": 1.0,
+    	"fpWeight": 0.11,
+    	"tnWeight": 1.0
+	}
+  }
+}
