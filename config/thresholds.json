@@ -1,8 +1,8 @@
 {
     "TSA_AR": {
         "standard": {
-            "score": -0.4925706230773128,
-            "threshold": 0.5
+            "score": -41.25283733915947,
+            "threshold": 0.7856933593750001
         }
     },
     "TSA_ARMA": {
