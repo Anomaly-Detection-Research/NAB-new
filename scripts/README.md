@@ -15,15 +15,7 @@ python -m pip install pandas
 python -m pip install numpy
 python -m pip install plotly
 ```
- * Generate the list of data files and result 
-```
-cd /path/to/nab
-ls -1 data/*/*.csv | grep data > scripts/data_file_paths.txt
-ls -1 results/*/*/*.csv | grep results | grep -v test_results > scripts/results_file_paths.txt
-cd scripts
-ln -s ../data
-ln -s ../results
-```
+
  * Run Jupyter notebook in scripts directory
  ```
  jupyter notebook
