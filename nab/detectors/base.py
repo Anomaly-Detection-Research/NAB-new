@@ -46,6 +46,9 @@ class AnomalyDetector(object):
     self.inputMin = self.dataSet.data["value"].min()
     self.inputMax = self.dataSet.data["value"].max()
 
+    # Added attribute threadId so that users can use it in their detectors when printing debug information this attribute is filled by detectDataSet() function below
+    self.threadId = None
+
 
   def initialize(self):
     """Do anything to initialize your detector in before calling run.
@@ -136,8 +139,9 @@ def detectDataSet(args):
 
   print "%s: Beginning detection with %s for %s" % \
                                                 (i, detectorName, relativePath)
+  # Added attribute threadId so that users can use it in their detectors when printing debug information
+  detectorInstance.threadId = i
   detectorInstance.initialize()
-
   results = detectorInstance.run()
 
   # label=1 for relaxed windows, 0 otherwise
@@ -148,3 +152,5 @@ def detectDataSet(args):
   print "%s: Completed processing %s records at %s" % \
                                         (i, len(results.index), datetime.now())
   print "%s: Results have been written to %s" % (i, outputPath)
+
+  

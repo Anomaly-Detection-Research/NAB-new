@@ -13,23 +13,33 @@ class AR:
     # Setters
     def set_p(self,p):
         self.p=p 
-        return 0
     
     def set_validation_data_set(self,data):
-        self.validation_data_set = data
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+        self.validation_data_set = np.array(data)
+        self.validation_data_set.shape = (size,1)
+        self.normalized_valitaion_data_set = self.validation_data_set - np.mean(self.validation_data_set)
         
     def set_testing_data_set(self,data):
-        self.testing_data_set = data
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+        self.testing_data_set = np.array(data)
+        self.testing_data_set.shape = (size,1)
+        self.normalized_testing_data_set = self.testing_data_set - np.mean(self.testing_data_set) 
     
     def set_training_data_set(self,data):
-        self.training_data = data
-        self.training_data_mean = np.mean(data)
-        self.training_data_std = np.std(data, ddof=1)
-        self.Z = data - self.training_data_mean
-        self.Z.shape = (len(data),1)
-        self.Z_mean = np.mean(self.Z)
-        self.Z_std = np.std(self.Z, ddof=1)
-        return 0
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+        self.training_data_set = np.array(data)
+        self.training_data_set.shape = (size,1)
+        self.normalized_training_data_set = self.training_data_set - np.mean(self.training_data_set)
     
     # Model
     def shock(self):
@@ -49,48 +59,74 @@ class AR:
         return row
     
     def calculate_weights(self):
-        normal_matrix = np.zeros((len(self.training_data),self.p+1))
+        normal_matrix = np.zeros((np.max(self.training_data_set.shape),self.p+1))
         
-        for i in range(0,len(self.training_data)):
-            normal_matrix[i] = self.calculate_normal_matrix_x_row(self.Z,i)
+        for i in range(0,np.max(self.training_data_set.shape)):
+            normal_matrix[i] = self.calculate_normal_matrix_x_row(self.normalized_training_data_set,i)
         
         normal_matrix_tanspose = normal_matrix.transpose()
-        self.weights = np.dot(np.dot(np.linalg.pinv(np.dot(normal_matrix_tanspose,normal_matrix)),normal_matrix_tanspose),self.Z)
-        return 0
+        self.weights = np.dot(np.dot(np.linalg.pinv(np.dot(normal_matrix_tanspose,normal_matrix)),normal_matrix_tanspose),self.normalized_training_data_set)
         
-    def get_prediction(self,data_set):
-        self.prediction = np.zeros((np.max(data_set.shape),1))
-        Z = data_set - np.mean(data_set)
-        Z.shape = (np.max(data_set.shape),1)
-        for i in range(0,np.max(data_set.shape)):
-            self.prediction[i] = np.dot(self.calculate_normal_matrix_x_row(Z, i), self.weights)
+    def get_prediction(self,data):
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+            data = np.array(data)
+        self.predictions = np.zeros((size,1))
+        data.shape = (size,1)
+        data_mean = np.mean(data)
+        
+        normalized_data = data - data_mean
+        
+        for i in range(0,size):
+            self.predictions[i] = np.dot(self.calculate_normal_matrix_x_row(normalized_data, i), self.weights)
+        
+        self.predictions = self.predictions.transpose()[0] + data_mean
+        return self.predictions
     
-        self.prediction = self.prediction.transpose()[0] + np.mean(data_set)
+    def get_single_prediction(self,data,time):
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+            data = np.array(data)
+        data.shape = (size,1)
+        data_mean = np.mean(data)
+        normalized_data = data - data_mean
+        self.prediction = np.dot(self.calculate_normal_matrix_x_row(normalized_data, time), self.weights)
+        
+        self.prediction = self.prediction[0][0]
+        self.prediction = self.prediction + data_mean
         return self.prediction
-    
-    def get_single_prediction(self,data_set,time):
-        mean = np.mean(data_set)
-        Z = data_set - mean
-        prediction = np.dot(self.calculate_normal_matrix_x_row(Z, time), self.weights)
-        prediction = prediction[0][0]
-        prediction = prediction + mean
-        return prediction
 
     # Diagnostics and identification messures
-    def get_mse(self, values, prediction):
+    def get_mse(self, data, predictions):
+        if hasattr(data,'shape'):
+            size = np.max(data.shape)
+        else:
+            size = len(data)
+            data = np.array(data)
+        data.shape = (size,1)
         error = 0.0
-        for i in range(0,len(values)):
-            error += (values[i] - prediction[i])**2
-        return error/len(values)
+        for i in range(0,size):
+            error += (data[i] - predictions[i])**2
+        return error/size
 
-    def get_anomaly_scores(self, data, prediction):
-        mse = np.zeros(len(prediction))
-        for i in range(0, len(prediction)):
-            mse_value = data[i]-prediction[i]
-            if mse_value < 0:
-                mse_value = -1*mse_value
-            mse[i] = mse_value
-        max_mse = np.max(mse)
-        if max_mse == 0:
-            return mse
-        return mse/max_mse
+    def get_anomaly_scores(self, data, predictions):
+        if hasattr(predictions,'shape'):
+            size = np.max(predictions.shape)
+        else:
+            size = len(predictions)
+            predictions = np.array(predictions)
+        predictions.shape = (size,1)
+        anomaly_score = np.zeros(size)
+        for i in range(0, size):
+            anomaly_score_tmp = data[i]-predictions[i]
+            if anomaly_score_tmp < 0:
+                anomaly_score_tmp = -1*anomaly_score_tmp
+            anomaly_score[i] = anomaly_score_tmp
+        max_anomaly_score = np.max(anomaly_score)
+        if max_anomaly_score == 0:
+            return anomaly_score
+        return anomaly_score/max_anomaly_score
