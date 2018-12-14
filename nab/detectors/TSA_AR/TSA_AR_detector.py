@@ -24,7 +24,7 @@ class TSA_ARDetector(AnomalyDetector):
     self.values.append(inputData['value'])
     self.ar_model.set_training_data_set(self.values)
 
-    if self.count % self.retrain_parapeters_interval:
+    if self.count % self.retrain_parapeters_interval == 0:
       mse = np.zeros(self.parameter_training_epochs-1)
       for i in range(1, self.parameter_training_epochs):
           self.ar_model.set_p(i)
