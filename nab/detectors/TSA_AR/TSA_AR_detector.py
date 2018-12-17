@@ -10,7 +10,7 @@ class TSA_ARDetector(AnomalyDetector):
 
     super(TSA_ARDetector, self).__init__(*args, **kwargs)
     self.detector_name = "TSA_AR"
-    self.parameter_training_epochs = 40
+    self.parameter_training_epochs = 50
     self.retrain_parapeters_interval = 20
     self.count = 0
     self.values = []
