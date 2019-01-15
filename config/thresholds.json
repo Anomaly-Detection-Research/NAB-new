@@ -1,4 +1,16 @@
 {
+    "random": {
+        "standard": {
+            "score": -41.25283733915947,
+            "threshold": 0.5
+        }
+    },
+    "LSTMCNnet": {
+        "standard": {
+            "score": -41.25283733915947,
+            "threshold": 0.5
+        }
+    },
     "TSA_AR": {
         "standard": {
             "score": -41.25283733915947,

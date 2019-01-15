@@ -1,7 +1,4 @@
 {
-    "TSA": {
-        "AR_standard": 89.89345308390072
-    },
     "contextOSE": {
         "reward_low_FN_rate": 73.18167250416667,
         "reward_low_FP_rate": 66.97713919047413,
@@ -23,18 +20,24 @@
         "standard": 57.99434335898808
     },
     "null": {
+        "reward_low_FN_rate": 0.0,
+        "reward_low_FP_rate": 0.0,
         "standard": 0.0
     },
     "numenta": {
-        "standard": 95.47773782651258
+        "reward_low_FN_rate": 74.3202443095115,
+        "reward_low_FP_rate": 63.11684160219828,
+        "standard": 70.10105611943965
     },
     "numentaTM": {
-        "reward_low_FN_rate": 69.18506822906035,
+        "reward_low_FN_rate": 69.185068229060349,
         "reward_low_FP_rate": 56.665308225043105,
-        "standard": 64.55346441254311
+        "standard": 64.553464412543107
     },
     "random": {
-        "standard": 95.12219584861667
+        "reward_low_FN_rate": 25.876351314080456,
+        "reward_low_FP_rate": 5.763682319827586,
+        "standard": 16.831768350517237
     },
     "randomCutForest": {
         "reward_low_FN_rate": 59.74876476310345,
