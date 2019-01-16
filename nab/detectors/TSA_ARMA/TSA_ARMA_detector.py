@@ -9,17 +9,22 @@ class TSA_ARMADetector(AnomalyDetector):
     super(TSA_ARMADetector, self).__init__(*args, **kwargs)
     self.count = 0
     self.anomaly_scores = None
+    self.prediction = None
 
+  def getAdditionalHeaders(self):
+    """Returns a list of strings."""
+    return ["prediction"]
 
   def handleRecord(self, inputData):
     """Returns a tuple (anomalyScore).
     The anomalyScore is simply a random value from 0 to 1
     """
     anomalyScore = self.anomaly_scores[self.count]
+    prediction = self.prediction[self.count]
     self.count += 1
     # print("handle Record : "+str(self.count) )
     # print(inputData)
-    return (anomalyScore, )
+    return (anomalyScore, prediction)
 
 
   def initialize(self):
@@ -70,6 +75,7 @@ class TSA_ARMADetector(AnomalyDetector):
     prediction = arma_model.get_prediction(arma_model.validation_data_set)
     anomaly_scores = arma_model.get_anomaly_scores(arma_model.validation_data_set, prediction)
 
+    self.prediction = prediction
     self.anomaly_scores = anomaly_scores
     self.count = 0
     print("Done")
