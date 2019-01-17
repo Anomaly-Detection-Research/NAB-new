@@ -1,10 +1,4 @@
 {
-    "random": {
-        "standard": {
-            "score": -41.25283733915947,
-            "threshold": 0.5
-        }
-    },
     "LSTMCNnet": {
         "standard": {
             "score": -41.25283733915947,
@@ -19,8 +13,8 @@
     },
     "TSA_ARMA": {
         "standard": {
-            "score": -57.53265388990167,
-            "threshold": 0.9749755859375003
+            "score": -57.339440431382435,
+            "threshold": 0.9843753814697271
         }
     },
     "TSA_MA": {
@@ -47,6 +41,12 @@
         "standard": {
             "score": 45.63585249479601,
             "threshold": 0.5126953125
+        }
+    },
+    "random": {
+        "standard": {
+            "score": -41.25283733915947,
+            "threshold": 0.5
         }
     }
 }
